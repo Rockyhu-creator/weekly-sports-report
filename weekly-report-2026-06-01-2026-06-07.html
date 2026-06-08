@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>训练周报 | 2026.06.01 — 2026.06.07</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --bg-primary: #0c0c12;
+  --bg-secondary: #13131f;
+  --bg-card: rgba(20, 20, 35, 0.7);
+  --bg-card-hover: rgba(25, 25, 45, 0.85);
+  --accent-cyan: #00e5ff;
+  --accent-blue: #2979ff;
+  --accent-orange: #ff6d00;
+  --accent-red: #ff1744;
+  --accent-green: #00e676;
+  --accent-yellow: #ffd600;
+  --text-primary: #f0f0f5;
+  --text-secondary: #8a8a9a;
+  --text-muted: #5a5a6a;
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-glow: rgba(0,229,255,0.15);
+  --glass-blur: 20px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.bg-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-grid::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(41,121,255,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,229,255,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(255,109,0,0.04) 0%, transparent 50%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(41,121,255,0.1));
+  border: 1px solid var(--border-glow);
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-size: 13px;
+  color: var(--accent-cyan);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.header-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.header-date {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+  opacity: 0.6;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,229,255,0.05);
+}
+
+.stat-card.highlight::before {
+  background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+}
+
+.stat-card.highlight-green::before {
+  background: linear-gradient(90deg, var(--accent-green), #00bfa5);
+}
+
+.stat-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.stat-value .unit { font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-left: 4px; }
+
+.stat-label { font-size: 14px; color: var(--text-secondary); font-weight: 400; }
+
+.stat-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+
+.section { margin-bottom: 40px; }
+
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+
+.section-header h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle), transparent); }
+
+.day-grid { display: grid; gap: 16px; }
+
+.day-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.day-card:hover { border-color: rgba(0,229,255,0.1); }
+
+.day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: linear-gradient(90deg, rgba(0,229,255,0.03), transparent);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.day-title { display: flex; align-items: center; gap: 12px; }
+
+.day-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(0,229,255,0.1);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0,229,255,0.2);
+}
+
+.day-badge.rest { background: rgba(90,90,106,0.2); color: var(--text-muted); border-color: rgba(90,90,106,0.3); }
+
+.day-name { font-size: 16px; font-weight: 600; }
+
+.day-total { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-secondary); }
+
+.day-content { padding: 16px 24px; }
+
+.session-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 70px 80px 80px 60px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+}
+
+.session-row:last-child { border-bottom: none; }
+
+.session-time { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 13px; }
+.session-name { font-weight: 500; color: var(--text-primary); }
+.session-stat { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--text-secondary); font-size: 13px; }
+.session-stat.highlight { color: var(--accent-cyan); font-weight: 600; }
+
+.day-summary {
+  display: flex; gap: 24px; padding: 16px 24px;
+  background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-subtle);
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+}
+
+.day-summary-item { display: flex; align-items: center; gap: 6px; }
+.day-summary-item .label { color: var(--text-muted); }
+.day-summary-item .value { color: var(--accent-cyan); font-weight: 600; }
+
+.day-note { padding: 12px 24px; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle); background: rgba(255,109,0,0.03); }
+.day-note.alert { background: rgba(255,23,68,0.05); border-left: 3px solid var(--accent-red); }
+
+.chart-container {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.chart-title { font-size: 16px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+.chart-title .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+
+.ascii-chart {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; line-height: 1.8; color: var(--text-secondary);
+  white-space: pre; overflow-x: auto;
+}
+
+.ascii-chart .peak { color: var(--accent-cyan); font-weight: 700; }
+.ascii-chart .low { color: var(--accent-orange); font-weight: 700; }
+.ascii-chart .normal { color: var(--accent-green); }
+
+.metric-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.metric-table th { text-align: left; padding: 14px 16px; color: var(--text-muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-subtle); }
+.metric-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); }
+.metric-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text-primary); }
+.metric-table .value-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-primary); }
+.metric-table .warning { color: var(--accent-orange); }
+.metric-table .danger { color: var(--accent-red); }
+.metric-table .good { color: var(--accent-green); }
+
+.rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+.rec-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rec-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+.rec-card.priority-high::before { background: linear-gradient(180deg, var(--accent-red), var(--accent-orange)); }
+.rec-card.priority-medium::before { background: linear-gradient(180deg, var(--accent-orange), var(--accent-yellow)); }
+.rec-card.priority-low::before { background: linear-gradient(180deg, var(--accent-green), var(--accent-cyan)); }
+
+.rec-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+.rec-priority { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.priority-high .rec-priority { background: rgba(255,23,68,0.15); color: var(--accent-red); }
+.priority-medium .rec-priority { background: rgba(255,109,0,0.15); color: var(--accent-orange); }
+.priority-low .rec-priority { background: rgba(0,230,118,0.15); color: var(--accent-green); }
+
+.rec-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.rec-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.fun-facts {
+  background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(41,121,255,0.05));
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.fun-facts::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.fun-facts-content { position: relative; z-index: 1; }
+.fun-facts h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--accent-cyan); }
+
+.fun-facts .big-number {
+  font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1.2;
+}
+
+.fun-facts .big-label { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; }
+
+.fun-items { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.fun-item { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text-secondary); }
+.fun-item .emoji { font-size: 24px; }
+
+.footer {
+  text-align: center; padding: 40px 0 20px; color: var(--text-muted);
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+  border-top: 1px solid var(--border-subtle); margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 28px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .session-row { grid-template-columns: 1fr; gap: 4px; }
+  .session-row > * { text-align: left !important; }
+  .day-summary { flex-direction: column; gap: 8px; }
+  .fun-items { flex-direction: column; gap: 12px; }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-badge">Weekly Training Report</div>
+    <h1>训练周报</h1>
+    <div class="header-date">2026.06.01 — 2026.06.07</div>
+  </header>
+
+  <!-- Stats Overview -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-icon">📅</span>
+      <div class="stat-value">5<span class="unit">天</span></div>
+      <div class="stat-label">训练天数</div>
+      <div class="stat-note">二 / 三 / 四 / 五 / 六</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">🔥</span>
+      <div class="stat-value">10<span class="unit">次</span></div>
+      <div class="stat-label">总训练次数</div>
+      <div class="stat-note">综合体能×5 + 力量×5</div>
+    </div>
+    <div class="stat-card highlight-green">
+      <span class="stat-icon">⏱️</span>
+      <div class="stat-value">9<span class="unit">h</span> 58<span class="unit">min</span></div>
+      <div class="stat-label">总训练时长</div>
+      <div class="stat-note">平均 2h 0min/训练天</div>
+    </div>
+    <div class="stat-card highlight">
+      <span class="stat-icon">⚡</span>
+      <div class="stat-value">3,343<span class="unit">kcal</span></div>
+      <div class="stat-label">总热量消耗</div>
+      <div class="stat-note">≈ 19 碗米饭 🍚</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">📊</span>
+      <div class="stat-value">411<span class="unit">TSS</span></div>
+      <div class="stat-label">周训练负荷</div>
+      <div class="stat-note">高负荷周</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">❤️</span>
+      <div class="stat-value">124<span class="unit">bpm</span></div>
+      <div class="stat-label">平均心率</div>
+      <div class="stat-note">有氧区间 Zone 2</div>
+    </div>
+  </div>
+
+  <!-- Daily Training -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🔥 每日训练明细</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="day-grid">
+
+      <!-- Monday 06/01 - Rest -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge rest">MON</span>
+            <span class="day-name">周一 06/01</span>
+          </div>
+          <span class="day-total">😴 主动恢复日</span>
+        </div>
+        <div class="day-content">
+          <div style="padding: 20px 0; text-align: center; color: var(--text-muted);">
+            完全休息 · 为本周蓄能
+          </div>
+        </div>
+        <div class="day-note">
+          HRV 76，基线 69，恢复状态良好 ✅
+        </div>
+      </div>
+
+      <!-- Tuesday 06/02 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge">TUE</span>
+            <span class="day-name">周二 06/02</span>
+          </div>
+          <span class="day-total">⚡ 三段式训练日</span>
+        </div>
+        <div class="day-content">
+          <div class="session-row">
+            <span class="session-time">17:08</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">18min</span>
+            <span class="session-stat">HR 134</span>
+            <span class="session-stat highlight">147 kcal</span>
+            <span class="session-stat">TL 20</span>
+          </div>
+          <div class="session-row">
+            <span class="session-time">17:45</span>
+            <span class="session-name">力量训练</span>
+            <span class="session-stat">18min</span>
+            <span class="session-stat">HR 116</span>
+            <span class="session-stat highlight">143 kcal</span>
+            <span class="session-stat">TL 10</span>
+          </div>
+          <div class="session-row">
+            <span class="session-time">18:05</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">70min</span>
+            <span class="session-stat">HR 134</span>
+            <span class="session-stat highlight">571 kcal</span>
+            <span class="session-stat">TL 76</span>
+          </div>
+        </div>
+        <div class="day-summary">
+          <div class="day-summary-item"><span class="label">时长</span><span class="value">106min</span></div>
+          <div class="day-summary-item"><span class="label">消耗</span><span class="value">861 kcal</span></div>
+          <div class="day-summary-item"><span class="label">负荷</span><span class="value">106 TSS</span></div>
+        </div>
+        <div class="day-note">
+          HRV 64（基线 69），略低但可承受。三段式训练效率高，末段 70min 体能课负荷达 76 TSS。
+        </div>
+      </div>
+
+      <!-- Wednesday 06/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge">WED</span>
+            <span class="day-name">周三 06/03</span>
+          </div>
+          <span class="day-total">💪 双模式训练日</span>
+        </div>
+        <div class="day-content">
+          <div class="session-row">
+            <span class="session-time">18:29</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">65min</span>
+            <span class="session-stat">HR 122</span>
+            <span class="session-stat highlight">450 kcal</span>
+            <span class="session-stat">TL 47</span>
+          </div>
+          <div class="session-row">
+            <span class="session-time">19:35</span>
+            <span class="session-name">力量训练</span>
+            <span class="session-stat">47min</span>
+            <span class="session-stat">HR 121</span>
+            <span class="session-stat highlight">318 kcal</span>
+            <span class="session-stat">TL 34</span>
+          </div>
+        </div>
+        <div class="day-summary">
+          <div class="day-summary-item"><span class="label">时长</span><span class="value">112min</span></div>
+          <div class="day-summary-item"><span class="label">消耗</span><span class="value">768 kcal</span></div>
+          <div class="day-summary-item"><span class="label">负荷</span><span class="value">81 TSS</span></div>
+        </div>
+        <div class="day-note alert">
+          <strong>⚠️ 疲劳信号</strong>：连续第 2 天训练，HRV 降至 <strong style="color:var(--accent-red)">48</strong>（基线 68，跌幅 29%），疲劳指数 +6，ATI 61 > CTI 55，负荷比 1.10，急性负荷偏高。
+        </div>
+      </div>
+
+      <!-- Thursday 06/04 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge">THU</span>
+            <span class="day-name">周四 06/04</span>
+          </div>
+          <span class="day-total">🔥 中等强度日</span>
+        </div>
+        <div class="day-content">
+          <div class="session-row">
+            <span class="session-time">18:24</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">51min</span>
+            <span class="session-stat">HR 128</span>
+            <span class="session-stat highlight">384 kcal</span>
+            <span class="session-stat">TL 44</span>
+          </div>
+        </div>
+        <div class="day-summary">
+          <div class="day-summary-item"><span class="label">时长</span><span class="value">51min</span></div>
+          <div class="day-summary-item"><span class="label">消耗</span><span class="value">384 kcal</span></div>
+          <div class="day-summary-item"><span class="label">负荷</span><span class="value">44 TSS</span></div>
+        </div>
+        <div class="day-note alert">
+          <strong>⚠️ 连续第 3 天</strong>：HRV 继续低迷 <strong style="color:var(--accent-orange)">45</strong>（基线 67），RHR 52，疲劳指数 +4。仅安排单次体能课，主动降量。
+        </div>
+      </div>
+
+      <!-- Friday 06/05 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge">FRI</span>
+            <span class="day-name">周五 06/05</span>
+          </div>
+          <span class="day-total">💪 双模式高强度日</span>
+        </div>
+        <div class="day-content">
+          <div class="session-row">
+            <span class="session-time">15:54</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">64min</span>
+            <span class="session-stat">HR 120</span>
+            <span class="session-stat highlight">388 kcal</span>
+            <span class="session-stat">TL 40</span>
+          </div>
+          <div class="session-row">
+            <span class="session-time">16:58</span>
+            <span class="session-name">力量训练</span>
+            <span class="session-stat">85min</span>
+            <span class="session-stat">HR 125</span>
+            <span class="session-stat highlight">695 kcal</span>
+            <span class="session-stat">TL 73</span>
+          </div>
+        </div>
+        <div class="day-summary">
+          <div class="day-summary-item"><span class="label">时长</span><span class="value">149min</span></div>
+          <div class="day-summary-item"><span class="label">消耗</span><span class="value">1,084 kcal</span></div>
+          <div class="day-summary-item"><span class="label">负荷</span><span class="value">113 TSS</span></div>
+        </div>
+        <div class="day-note alert">
+          <strong>⚠️ 超负荷警告</strong>：负荷比 <strong style="color:var(--accent-red)">1.19</strong>（本周最高），ATI 67，疲劳指数 <strong style="color:var(--accent-red)">+11</strong>。85min 力量课贡献 73 TSS 单课最高负荷。HRV 回升至 68 但属假性恢复，RHR 50 仍偏高。
+        </div>
+      </div>
+
+      <!-- Saturday 06/06 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge">SAT</span>
+            <span class="day-name">周六 06/06</span>
+          </div>
+          <span class="day-total">💪 双模式训练日</span>
+        </div>
+        <div class="day-content">
+          <div class="session-row">
+            <span class="session-time">18:34</span>
+            <span class="session-name">综合体能训练</span>
+            <span class="session-stat">59min</span>
+            <span class="session-stat">HR 119</span>
+            <span class="session-stat highlight">396 kcal</span>
+            <span class="session-stat">TL 39</span>
+          </div>
+          <div class="session-row">
+            <span class="session-time">19:33</span>
+            <span class="session-name">力量训练</span>
+            <span class="session-stat">71min</span>
+            <span class="session-stat">HR 110</span>
+            <span class="session-stat highlight">548 kcal</span>
+            <span class="session-stat">TL 28</span>
+          </div>
+        </div>
+        <div class="day-summary">
+          <div class="day-summary-item"><span class="label">时长</span><span class="value">130min</span></div>
+          <div class="day-summary-item"><span class="label">消耗</span><span class="value">944 kcal</span></div>
+          <div class="day-summary-item"><span class="label">负荷</span><span class="value">67 TSS</span></div>
+        </div>
+        <div class="day-note alert">
+          <strong>⚠️ 连续第 5 天</strong>：HRV <strong style="color:var(--accent-orange)">56</strong>（基线 66），疲劳指数 +10，负荷比 1.17。身体明显透支，心率较前日下降（110/119 vs 125/120）但疲劳持续累积。
+        </div>
+      </div>
+
+      <!-- Sunday 06/07 - Rest -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-title">
+            <span class="day-badge rest">SUN</span>
+            <span class="day-name">周日 06/07</span>
+          </div>
+          <span class="day-total">🛌 休息恢复日</span>
+        </div>
+        <div class="day-content">
+          <div style="padding: 20px 0; text-align: center; color: var(--text-muted);">
+            完全休息 · 身体进入修复模式
+          </div>
+        </div>
+        <div class="day-note">
+          HRV 回升至 68，疲劳指数降至 +2，但尚未完全恢复。需要更多休息日。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Body Status Trends -->
+  <section class="section">
+    <div class="section-header">
+      <h2>📈 身体状态趋势</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title"><span class="dot" style="background:var(--accent-cyan);box-shadow:0 0 10px var(--accent-cyan)"></span> HRV（心率变异性）走势</div>
+      <div class="ascii-chart">
+<span class="peak">76</span> ┤● 周一（休息日峰值）
+68 ┤                                    ● 周五              ● 周日
+64 ┤          ● 周二
+56 ┤                                                    ● 周六
+<span class="low">48</span> ┤              ● 周三（最低谷）
+45 ┤                  ● 周四
+   └────┬────┬────┬────┬────┬────┬────┬────
+       一   二   三   四   五   六   日
+      6/01 6/02 6/03 6/04 6/05 6/06 6/07</div>
+      <table class="metric-table" style="margin-top: 20px;">
+        <tr><th>指标</th><th>本周表现</th><th>解读</th></tr>
+        <tr><td>HRV 均值</td><td class="value-cell">60.7</td><td>远低于基线（66-69），训练刺激强烈</td></tr>
+        <tr><td>HRV 最低</td><td class="value-cell danger">45（周三/四）</td><td>连续训练导致深度疲劳，HRV 跌破基线 30%+</td></tr>
+        <tr><td>HRV 恢复</td><td class="value-cell warning">68（周日）</td><td>仅恢复至基线附近，1 天休息不够充分</td></tr>
+      </table>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title"><span class="dot" style="background:var(--accent-orange);box-shadow:0 0 10px var(--accent-orange)"></span> 静息心率（RHR）走势</div>
+      <table class="metric-table">
+        <tr><th>日期</th><th>RHR</th><th>状态</th></tr>
+        <tr><td>6/01</td><td class="value-cell">48</td><td>良好</td></tr>
+        <tr><td>6/02</td><td class="value-cell good">47</td><td>最佳状态</td></tr>
+        <tr><td>6/03</td><td class="value-cell warning">50 ⚠️</td><td>疲劳信号</td></tr>
+        <tr><td>6/04</td><td class="value-cell warning">52 ⚠️</td><td>持续偏高</td></tr>
+        <tr><td>6/05</td><td class="value-cell">50</td><td>略高</td></tr>
+        <tr><td>6/06</td><td class="value-cell">49</td><td>回落中</td></tr>
+        <tr><td>6/07</td><td class="value-cell">49</td><td>恢复中</td></tr>
+      </table>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span> 疲劳指数（Tired Rate）</div>
+      <div class="ascii-chart">
+<span class="low">+11</span>┤                          ★ 周五（本周最疲劳）
+<span class="low">+10</span>┤                                    ● 周六
+ +6 ┤              ● 周三
+ +4 ┤                  ● 周四
+ +2 ┤                                          ● 周日
+  0 ┤━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 理想线
+ -3 ┤● 周一
+<span class="normal">-3</span> ┤● 周一
+   └────┬────┬────┬────┬────┬────┬────┬────
+       一   二   三   四   五   六   日</div>
+    </div>
+  </section>
+
+  <!-- Training Load Analysis -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🎯 训练负荷分析</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title"><span class="dot" style="background:var(--accent-blue);box-shadow:0 0 10px var(--accent-blue)"></span> 周负荷分布</div>
+      <table class="metric-table">
+        <tr><th>日期</th><th>训练负荷</th><th>负荷比</th><th>状态</th></tr>
+        <tr><td>6/01</td><td class="value-cell">0</td><td>0.94</td><td>恢复日</td></tr>
+        <tr><td>6/02</td><td class="value-cell">106</td><td>1.05</td><td>中等偏高</td></tr>
+        <tr><td>6/03</td><td class="value-cell">81</td><td class="value-cell danger">1.10 ⚠️</td><td class="danger">急性超负荷</td></tr>
+        <tr><td>6/04</td><td class="value-cell">44</td><td>1.07</td><td>偏高</td></tr>
+        <tr><td>6/05</td><td class="value-cell warning">113</td><td class="value-cell danger">1.19 ⚠️</td><td class="danger">严重超负荷</td></tr>
+        <tr><td>6/06</td><td class="value-cell warning">67</td><td class="value-cell danger">1.17 ⚠️</td><td class="danger">持续超负荷</td></tr>
+        <tr><td>6/07</td><td class="value-cell">0</td><td>1.03</td><td>恢复日</td></tr>
+      </table>
+      <div style="margin-top: 20px; padding: 16px; background: rgba(255,23,68,0.05); border-radius: 12px; border-left: 3px solid var(--accent-red);">
+        <strong style="color: var(--accent-red);">关键发现：</strong>
+        <span style="color: var(--text-secondary);">连续 5 天训练（周二→周六），其中 <strong style="color:var(--accent-red)">3 天负荷比 > 1.10</strong>，周五达到 <strong style="color:var(--accent-red)">1.19</strong>（严重超负荷区）。本周总负荷 411 TSS，日均值 59 TSS，远超慢性训练指数（CTI 55-57），属于<strong>高风险高负荷周</strong>。</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span> ATI / CTI（急慢性训练指数）</div>
+      <table class="metric-table">
+        <tr><th>日期</th><th>ATI（急性）</th><th>CTI（慢性）</th><th>比值</th><th>解读</th></tr>
+        <tr><td>6/01</td><td class="value-cell">50</td><td class="value-cell">53</td><td>0.94</td><td class="good">平衡</td></tr>
+        <tr><td>6/02</td><td class="value-cell">58</td><td class="value-cell">55</td><td>1.05</td><td>略高</td></tr>
+        <tr><td>6/03</td><td class="value-cell warning">61</td><td class="value-cell">55</td><td class="value-cell danger">1.10</td><td class="danger">急性偏高</td></tr>
+        <tr><td>6/04</td><td class="value-cell warning">59</td><td class="value-cell">55</td><td class="value-cell danger">1.07</td><td class="danger">持续偏高</td></tr>
+        <tr><td>6/05</td><td class="value-cell danger">67</td><td class="value-cell">56</td><td class="value-cell danger">1.19</td><td class="danger">严重超负荷</td></tr>
+        <tr><td>6/06</td><td class="value-cell danger">67</td><td class="value-cell">57</td><td class="value-cell danger">1.17</td><td class="danger">持续超负荷</td></tr>
+        <tr><td>6/07</td><td class="value-cell">57</td><td class="value-cell">55</td><td>1.03</td><td>恢复中</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Summary & Recommendations -->
+  <section class="section">
+    <div class="section-header">
+      <h2>💡 本周总结 & 下周建议</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+      <div class="chart-container" style="margin-bottom: 0;">
+        <div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span> ✅ 做得好的</div>
+        <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 14px; line-height: 2;">
+          <li>🎯 <strong style="color:var(--text-primary)">训练频率极高</strong>：5 天 10 次训练，执行力强</li>
+          <li>💪 <strong style="color:var(--text-primary)">力量课质量高</strong>：85min 力量课 73 TSS 是本周单课最高</li>
+          <li>🛌 <strong style="color:var(--text-primary)">周末选择休息</strong>：周日停止训练，避免进一步累积</li>
+        </ul>
+      </div>
+      <div class="chart-container" style="margin-bottom: 0;">
+        <div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span> ⚠️ 需要注意</div>
+        <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 14px; line-height: 2;">
+          <li>📅 <strong style="color:var(--text-primary)">连续 5 天训练</strong>：周二→周六无休息日，疲劳指数飙升至 +11</li>
+          <li>📉 <strong style="color:var(--text-primary)">HRV 跌幅过大</strong>：最低 45，较基线跌 33%，神经系统严重疲劳</li>
+          <li>🔴 <strong style="color:var(--text-primary)">负荷比连续超标</strong>：3 天 > 1.10，过度训练风险显著</td></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rec-grid">
+      <div class="rec-card priority-high">
+        <div class="rec-header">
+          <span class="rec-priority">高优先级</span>
+          <span class="rec-title">强制插入恢复日</span>
+        </div>
+        <div class="rec-desc">连续 5 天训练是本周最大的问题。下周必须采用「练2休1」模式，无论感觉如何都要安排休息日。HRV < 55 时当天不训练。</div>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="rec-header">
+          <span class="rec-priority">高优先级</span>
+          <span class="rec-title">降低单日总负荷</span>
+        </div>
+        <div class="rec-desc">双模式训练日（体能+力量）单日负荷控制在 80 TSS 以内。周五 113 TSS 已严重超标，拆分为两天或减量。</div>
+      </div>
+      <div class="rec-card priority-medium">
+        <div class="rec-header">
+          <span class="rec-priority">中优先级</span>
+          <span class="rec-title">监控晨起 HRV</span>
+        </div>
+        <div class="rec-desc">若晨起 HRV < 基线 20%（即 < 55），当天训练降为低强度或改休息。本周周三 HRV 48 已远超警戒线。</div>
+      </div>
+      <div class="rec-card priority-medium">
+        <div class="rec-header">
+          <span class="rec-priority">中优先级</span>
+          <span class="rec-title">关注 RHR 趋势</span>
+        </div>
+        <div class="rec-desc">RHR > 50 持续多天（本周三至周日），说明自主神经系统未完全恢复。需要连续 2 天低 RHR 才算恢复到位。</div>
+      </div>
+      <div class="rec-card priority-low">
+        <div class="rec-header">
+          <span class="rec-priority">低优先级</span>
+          <span class="rec-title">优化训练节奏</span>
+        </div>
+        <div class="rec-desc">建议：周一/四休息，周二/三/五/六训练，确保训练日后至少间隔 1 天恢复。力量课建议安排在恢复日之后。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fun Facts -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🍚 趣味数据</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="fun-facts">
+      <div class="fun-facts-content">
+        <h3>本周你消耗了</h3>
+        <div class="big-number">3,343</div>
+        <div class="big-label">kcal ≈ 19 碗米饭 🍚</div>
+        <div class="fun-items">
+          <div class="fun-item"><span class="emoji">🍔</span> 汉堡 × 5.6 个</div>
+          <div class="fun-item"><span class="emoji">🍕</span> 披萨 × 4.1 片</div>
+          <div class="fun-item"><span class="emoji">🍦</span> 冰淇淋 × 11.1 杯</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>报告生成时间：2026-06-08 | 数据来源：Coros Training Hub</div>
+    <div style="margin-top: 8px;">Powered by OpenClaw × Coros MCP</div>
+  </footer>
+
+</div>
+</body>
+</html>
