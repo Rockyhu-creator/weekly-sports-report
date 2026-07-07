@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>训练周报 Demo | 2026.06.29 — 2026.07.05</title>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.1/dist/apexcharts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{--bg-primary:#0c0c12;--bg-card:rgba(20,20,35,0.7);--bg-card-hover:rgba(25,25,45,0.85);--accent-cyan:#00e5ff;--accent-blue:#2979ff;--accent-orange:#ff6d00;--accent-red:#ff1744;--accent-green:#00e676;--accent-yellow:#ffd600;--accent-purple:#b388ff;--text-primary:#f0f0f5;--text-secondary:#8a8a9a;--text-muted:#5a5a6a;--border-subtle:rgba(255,255,255,0.06);--border-glow:rgba(0,229,255,0.15);--glass-blur:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden}
+.bg-grid{position:fixed;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+.bg-grid::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,rgba(41,121,255,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,229,255,0.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(255,109,0,0.04) 0%,transparent 50%)}
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 24px}
+.header{text-align:center;margin-bottom:48px}
+.header-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(41,121,255,0.1));border:1px solid var(--border-glow);border-radius:100px;padding:8px 20px;font-size:13px;color:var(--accent-cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.header-badge::before{content:'';width:8px;height:8px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 12px var(--accent-cyan);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.header h1{font-size:42px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff 0%,var(--accent-cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.header-date{font-family:'JetBrains Mono',monospace;color:var(--text-secondary);font-size:15px;letter-spacing:1px}
+.demo-tag{display:inline-block;margin-top:12px;padding:4px 14px;font-size:12px;background:rgba(255,109,0,0.15);color:var(--accent-orange);border-radius:6px;border:1px solid rgba(255,109,0,0.3);font-family:'JetBrains Mono',monospace}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:40px}
+.stat-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-blue));opacity:.6}
+.stat-card:hover{transform:translateY(-4px);background:var(--bg-card-hover);border-color:var(--border-glow);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(0,229,255,.05)}
+.stat-card.highlight::before{background:linear-gradient(90deg,var(--accent-orange),var(--accent-red))}
+.stat-card.highlight-green::before{background:linear-gradient(90deg,var(--accent-green),#00bfa5)}
+.stat-card.highlight-purple::before{background:linear-gradient(90deg,var(--accent-purple),var(--accent-blue))}
+.stat-icon{font-size:28px;margin-bottom:12px;display:block}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--text-primary);line-height:1.2;margin-bottom:6px}
+.stat-value .unit{font-size:16px;font-weight:400;color:var(--text-secondary);margin-left:4px}
+.stat-label{font-size:14px;color:var(--text-secondary)}
+.stat-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-family:'JetBrains Mono',monospace}
+.section{margin-bottom:40px}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.section-header h2{font-size:22px;font-weight:700}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border-subtle),transparent)}
+.chart-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:20px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent)}
+.chart-title{font-size:16px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.chart-title .dot{width:10px;height:10px;border-radius:50%}
+.chart-subtitle{font-size:13px;color:var(--text-muted);margin-bottom:16px;font-family:'JetBrains Mono',monospace}
+.chart-wrap{position:relative}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr}}
+.day-grid{display:grid;gap:16px}
+.day-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:16px;overflow:hidden;transition:all .3s ease}
+.day-card:hover{border-color:rgba(0,229,255,0.1)}
+.day-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:linear-gradient(90deg,rgba(0,229,255,0.03),transparent);border-bottom:1px solid var(--border-subtle)}
+.day-title{display:flex;align-items:center;gap:12px}
+.day-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;background:rgba(0,229,255,0.1);color:var(--accent-cyan);border:1px solid rgba(0,229,255,0.2)}
+.day-badge.rest{background:rgba(90,90,106,0.2);color:var(--text-muted);border-color:rgba(90,90,106,0.3)}
+.day-name{font-size:16px;font-weight:600}
+.day-total{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-secondary)}
+.day-content{padding:16px 24px}
+.session-row{display:grid;grid-template-columns:80px 1fr 70px 80px 80px 60px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-subtle);font-size:14px}
+.session-row:last-child{border-bottom:none}
+.session-time{font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:13px}
+.session-name{font-weight:500}
+.session-stat{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--text-secondary);font-size:13px}
+.session-stat.highlight{color:var(--accent-cyan);font-weight:600}
+.day-summary{display:flex;gap:24px;padding:16px 24px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border-subtle);font-family:'JetBrains Mono',monospace;font-size:13px}
+.day-summary-item{display:flex;align-items:center;gap:6px}
+.day-summary-item .label{color:var(--text-muted)}
+.day-summary-item .value{color:var(--accent-cyan);font-weight:600}
+.day-note{padding:12px 24px;font-size:13px;color:var(--text-secondary);border-top:1px solid var(--border-subtle);background:rgba(255,109,0,0.03)}
+.day-note.alert{background:rgba(255,23,68,0.05);border-left:3px solid var(--accent-red)}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.rec-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.rec-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.rec-card.priority-high::before{background:linear-gradient(180deg,var(--accent-red),var(--accent-orange))}
+.rec-card.priority-medium::before{background:linear-gradient(180deg,var(--accent-orange),var(--accent-yellow))}
+.rec-card.priority-low::before{background:linear-gradient(180deg,var(--accent-green),var(--accent-cyan))}
+.rec-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.rec-priority{font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+.priority-high .rec-priority{background:rgba(255,23,68,0.15);color:var(--accent-red)}
+.priority-medium .rec-priority{background:rgba(255,109,0,0.15);color:var(--accent-orange)}
+.priority-low .rec-priority{background:rgba(0,230,118,0.15);color:var(--accent-green)}
+.rec-title{font-size:15px;font-weight:600}
+.rec-desc{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.fun-facts{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(41,121,255,0.05));border:1px solid var(--border-glow);border-radius:20px;padding:32px;text-align:center;position:relative;overflow:hidden}
+.fun-facts::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,229,255,0.08) 0%,transparent 70%);animation:rotate 20s linear infinite}
+@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.fun-facts-content{position:relative;z-index:1}
+.fun-facts h3{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--accent-cyan)}
+.fun-facts .big-number{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.fun-facts .big-label{font-size:16px;color:var(--text-secondary);margin-bottom:24px}
+.fun-items{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.fun-item{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--text-secondary)}
+.fun-item .emoji{font-size:24px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+@media(max-width:900px){.summary-grid{grid-template-columns:1fr}}
+.summary-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:20px;padding:28px}
+.summary-card ul{list-style:none;padding:0;color:var(--text-secondary);font-size:14px;line-height:2}
+.footer{text-align:center;padding:40px 0 20px;color:var(--text-muted);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border-subtle);margin-top:20px}
+.insight-box{padding:16px;background:rgba(0,229,255,0.05);border-radius:12px;border-left:3px solid var(--accent-cyan);margin-top:16px;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.apexcharts-tooltip{background:rgba(20,20,35,0.95)!important;border:1px solid rgba(0,229,255,0.2)!important;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,0.5)!important}
+.apexcharts-tooltip-title{background:rgba(0,0,0,0.3)!important;border-bottom:1px solid rgba(255,255,255,0.05)!important;color:var(--text-primary)!important}
+.apexcharts-legend-text{color:var(--text-secondary)!important}
+.apexcharts-xaxistooltip{background:rgba(20,20,35,0.95)!important;border-color:rgba(0,229,255,0.2)!important}
+.apexcharts-xaxistooltip-text{color:var(--text-primary)!important}
+.apexcharts-gridline{stroke:rgba(255,255,255,0.04)!important}
+.apexcharts-xaxis-label,.apexcharts-yaxis-label{fill:var(--text-muted)!important;font-family:'JetBrains Mono',monospace!important}
+@media(max-width:768px){.header h1{font-size:28px}.stats-grid{grid-template-columns:repeat(2,1fr)}.session-row{grid-template-columns:1fr;gap:4px}.session-row>*{text-align:left!important}.day-summary{flex-direction:column;gap:8px}.fun-items{flex-direction:column;gap:12px}}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-subtle);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="container">
+
+<header class="header">
+<div class="header-badge">Weekly Training Report</div>
+<h1>训练周报</h1>
+<div class="header-date">2026.06.29 — 2026.07.05</div>
+<div class="demo-tag">⚡ ApexCharts Enhanced Demo</div>
+</header>
+
+<div class="stats-grid">
+<div class="stat-card"><span class="stat-icon">📅</span><div class="stat-value">4<span class="unit">天</span></div><div class="stat-label">训练天数</div><div class="stat-note">一 / 三 / 四 / 六</div></div>
+<div class="stat-card"><span class="stat-icon">🔥</span><div class="stat-value">10<span class="unit">次</span></div><div class="stat-label">总训练次数</div><div class="stat-note">综合体能×6 + 力量×4</div></div>
+<div class="stat-card highlight-green"><span class="stat-icon">⏱️</span><div class="stat-value">8<span class="unit">h</span> 23<span class="unit">min</span></div><div class="stat-label">总训练时长</div><div class="stat-note">平均 2h 06min/训练日</div></div>
+<div class="stat-card highlight"><span class="stat-icon">⚡</span><div class="stat-value">3,648<span class="unit">kcal</span></div><div class="stat-label">总热量消耗</div><div class="stat-note">≈ 21 碗米饭 🍚</div></div>
+<div class="stat-card"><span class="stat-icon">📊</span><div class="stat-value">338<span class="unit">TSS</span></div><div class="stat-label">周训练负荷</div><div class="stat-note">高负荷周</div></div>
+<div class="stat-card highlight-purple"><span class="stat-icon">❤️</span><div class="stat-value">117<span class="unit">bpm</span></div><div class="stat-label">平均心率</div><div class="stat-note">有氧区间 Zone 2</div></div>
+</div>
+
+<section class="section">
+<div class="section-header"><h2>📈 身体状态趋势</h2><div class="section-line"></div></div>
+<div class="chart-row">
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-cyan);box-shadow:0 0 10px var(--accent-cyan)"></span>HRV 心率变异性走势</div>
+<div class="chart-subtitle">基线 64-66 · 高于基线 = 恢复良好</div>
+<div id="chart-hrv" class="chart-wrap"></div>
+<div class="insight-box"><strong style="color:var(--accent-cyan)">关键发现：</strong>HRV 均值 68.3 高于基线 64.7，周六峰值 81 为本周最佳恢复状态。周日回落至 59，周六训练后恢复未完成。</div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-orange);box-shadow:0 0 10px var(--accent-orange)"></span>静息心率 (RHR) 走势</div>
+<div class="chart-subtitle">越低越好 · 47-49 为良好区间</div>
+<div id="chart-rhr" class="chart-wrap"></div>
+<div class="insight-box"><strong style="color:var(--accent-green)">稳定：</strong>RHR 全周稳定在 47-51 区间，周六 47 为本周最低。周日略升至 51，疲劳残留。</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-header"><h2>🎯 训练负荷 & 疲劳分析</h2><div class="section-line"></div></div>
+<div class="chart-card" style="margin-bottom:20px">
+<div class="chart-title"><span class="dot" style="background:var(--accent-blue);box-shadow:0 0 10px var(--accent-blue)"></span>每日训练负荷 & 负荷比</div>
+<div class="chart-subtitle">柱状图 = 训练负荷 (TSS) · 折线图 = 负荷比 (>1.15 = 超负荷风险)</div>
+<div id="chart-load" class="chart-wrap"></div>
+</div>
+<div class="chart-row">
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span>疲劳指数走势</div>
+<div class="chart-subtitle">正值 = 疲劳累积 · 负值 = 恢复中</div>
+<div id="chart-fatigue" class="chart-wrap"></div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span>ATI / CTI 急慢性训练指数</div>
+<div class="chart-subtitle">比值 0.8-1.3 为最佳训练区间</div>
+<div id="chart-ati-cti" class="chart-wrap"></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-header"><h2>🛡️ 心率区间分布</h2><div class="section-line"></div></div>
+<div class="chart-row">
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-purple);box-shadow:0 0 10px var(--accent-purple)"></span>训练强度雷达</div>
+<div class="chart-subtitle">本周各次训练的心率强度分布</div>
+<div id="chart-radar" class="chart-wrap"></div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><span class="dot" style="background:var(--accent-yellow);box-shadow:0 0 10px var(--accent-yellow)"></span>热量消耗进度</div>
+<div class="chart-subtitle">本周目标 4,000 kcal · 已完成 3,648 kcal</div>
+<div id="chart-radial" class="chart-wrap"></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-header"><h2>🔥 每日训练明细</h2><div class="section-line"></div></div>
+<div class="day-grid">
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge">MON</span><span class="day-name">周一 06/29</span></div><span class="day-total">💪 高强度力量日</span></div><div class="day-content"><div class="session-row"><span class="session-time">18:30</span><span class="session-name">综合体能训练</span><span class="session-stat">66min</span><span class="session-stat">HR 120</span><span class="session-stat highlight">454 kcal</span><span class="session-stat">TL 47</span></div><div class="session-row"><span class="session-time">19:36</span><span class="session-name">力量训练</span><span class="session-stat">57min</span><span class="session-stat">HR 114</span><span class="session-stat highlight">416 kcal</span><span class="session-stat">TL 31</span></div></div><div class="day-summary"><div class="day-summary-item"><span class="label">时长</span><span class="value">123min</span></div><div class="day-summary-item"><span class="label">消耗</span><span class="value">870 kcal</span></div><div class="day-summary-item"><span class="label">负荷</span><span class="value">78 TSS</span></div></div><div class="day-note">HRV <strong style="color:var(--accent-cyan)">63</strong>（基线 65），接近基线。训练后 RHR 47，身体响应正常。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge rest">TUE</span><span class="day-name">周二 06/30</span></div><span class="day-total">😴 主动恢复日</span></div><div class="day-content"><div style="padding:20px 0;text-align:center;color:var(--text-muted)">完全休息 · 身体修复中</div></div><div class="day-note">HRV 回落至 55，疲劳指数 -6，深度恢复模式。RHR 48 稳定。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge">WED</span><span class="day-name">周三 07/01</span></div><span class="day-total">⚡ 三练暴击日</span></div><div class="day-content"><div class="session-row"><span class="session-time">18:39</span><span class="session-name">综合体能训练</span><span class="session-stat">57min</span><span class="session-stat">HR 117</span><span class="session-stat highlight">379 kcal</span><span class="session-stat">TL 36</span></div><div class="session-row"><span class="session-time">19:36</span><span class="session-name">力量训练</span><span class="session-stat">53min</span><span class="session-stat">HR 124</span><span class="session-stat highlight">462 kcal</span><span class="session-stat">TL 45</span></div><div class="session-row"><span class="session-time">20:30</span><span class="session-name">综合体能训练</span><span class="session-stat">22min</span><span class="session-stat">HR 133</span><span class="session-stat highlight">182 kcal</span><span class="session-stat">TL 26</span></div></div><div class="day-summary"><div class="day-summary-item"><span class="label">时长</span><span class="value">132min</span></div><div class="day-summary-item"><span class="label">消耗</span><span class="value">1,023 kcal</span></div><div class="day-summary-item"><span class="label">负荷</span><span class="value">107 TSS</span></div></div><div class="day-note">当日训练负荷 <strong style="color:var(--accent-orange)">107 TSS</strong> 为本周峰值。HRV 回升至 <strong style="color:var(--accent-cyan)">73</strong>，恢复状态出色。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge">THU</span><span class="day-name">周四 07/02</span></div><span class="day-total">🔥 连续训练日</span></div><div class="day-content"><div class="session-row"><span class="session-time">18:24</span><span class="session-name">综合体能训练</span><span class="session-stat">66min</span><span class="session-stat">HR 114</span><span class="session-stat highlight">416 kcal</span><span class="session-stat">TL 35</span></div><div class="session-row"><span class="session-time">19:30</span><span class="session-name">力量训练</span><span class="session-stat">66min</span><span class="session-stat">HR 109</span><span class="session-stat highlight">444 kcal</span><span class="session-stat">TL 27</span></div><div class="session-row"><span class="session-time">20:37</span><span class="session-name">综合体能训练</span><span class="session-stat">17min</span><span class="session-stat">HR 123</span><span class="session-stat highlight">120 kcal</span><span class="session-stat">TL 13</span></div></div><div class="day-summary"><div class="day-summary-item"><span class="label">时长</span><span class="value">149min</span></div><div class="day-summary-item"><span class="label">消耗</span><span class="value">980 kcal</span></div><div class="day-summary-item"><span class="label">负荷</span><span class="value">75 TSS</span></div></div><div class="day-note alert"><strong>⚠️ 连续训练警告</strong>：连续第 2 个训练日，HRV 降至 <strong style="color:var(--accent-orange)">68</strong>，疲劳指数 <strong style="color:var(--accent-orange)">+3</strong>。累积疲劳开始显现。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge rest">FRI</span><span class="day-name">周五 07/03</span></div><span class="day-total">🛌 主动恢复日</span></div><div class="day-content"><div style="padding:20px 0;text-align:center;color:var(--text-muted)">完全休息 · 疲劳消散中</div></div><div class="day-note">HRV 反弹至 <strong style="color:var(--accent-cyan)">79</strong>（超基线 64），疲劳指数 -5，恢复显著。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge">SAT</span><span class="day-name">周六 07/04</span></div><span class="day-total">💪 周末双练日</span></div><div class="day-content"><div class="session-row"><span class="session-time">18:28</span><span class="session-name">综合体能训练</span><span class="session-stat">69min</span><span class="session-stat">HR 116</span><span class="session-stat highlight">447 kcal</span><span class="session-stat">TL 41</span></div><div class="session-row"><span class="session-time">19:37</span><span class="session-name">力量训练</span><span class="session-stat">63min</span><span class="session-stat">HR 116</span><span class="session-stat highlight">467 kcal</span><span class="session-stat">TL 37</span></div></div><div class="day-summary"><div class="day-summary-item"><span class="label">时长</span><span class="value">132min</span></div><div class="day-summary-item"><span class="label">消耗</span><span class="value">914 kcal</span></div><div class="day-summary-item"><span class="label">负荷</span><span class="value">78 TSS</span></div></div><div class="day-note">HRV <strong style="color:var(--accent-cyan)">81</strong>（远超基线 65），状态充沛。RHR 47 为本周最低。</div></div>
+<div class="day-card"><div class="day-header"><div class="day-title"><span class="day-badge rest">SUN</span><span class="day-name">周日 07/05</span></div><span class="day-total">😴 深度恢复日</span></div><div class="day-content"><div style="padding:20px 0;text-align:center;color:var(--text-muted)">完全休息 · 为下周蓄力</div></div><div class="day-note">HRV 59（略低于基线 66），疲劳指数 <strong style="color:var(--accent-green)">-8</strong> 深度恢复中。</div></div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-header"><h2>💡 本周总结 & 下周建议</h2><div class="section-line"></div></div>
+<div class="summary-grid">
+<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span>✅ 做得好的</div><ul><li>🎯 <strong style="color:var(--text-primary)">训练频率稳定</strong>：4 天 10 次，练2休1节奏执行到位</li><li>🫀 <strong style="color:var(--text-primary)">HRV 管理优秀</strong>：均值 68.3 高于基线 64.7</li><li>⚖️ <strong style="color:var(--text-primary)">负荷比控制好</strong>：全周 0.85-1.05，较上周改善明显</li></ul></div>
+<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span>⚠️ 需要注意</div><ul><li>📅 <strong style="color:var(--text-primary)">周三单日负荷偏高</strong>：107 TSS + 三练模式</li><li>📉 <strong style="color:var(--text-primary)">周日 HRV 偏低</strong>：59 低于基线 66</li><li>🔴 <strong style="color:var(--text-primary)">周四连续训练疲劳</strong>：疲劳指数 +3</li></ul></div>
+</div>
+<div class="rec-grid">
+<div class="rec-card priority-high"><div class="rec-header"><span class="rec-priority">高优先级</span><span class="rec-title">控制单日训练次数</span></div><div class="rec-desc">周三三练（132min/107 TSS）是本周负荷最高的训练日。建议将第三练调整为低强度恢复训练或取消，单日不超过2次正式训练。</div></div>
+<div class="rec-card priority-high"><div class="rec-header"><span class="rec-priority">高优先级</span><span class="rec-title">监控周日 HRV</span></div><div class="rec-desc">周日 HRV 59 低于基线 66，说明周六训练后恢复未完成。建议周一晨起先测 HRV，若 <60 则降强度训练或改为恢复日。</div></div>
+<div class="rec-card priority-medium"><div class="rec-header"><span class="rec-priority">中优先级</span><span class="rec-title">保持练2休1节奏</span></div><div class="rec-desc">本周训练-休息安排整体合理。下周继续保持此节奏，避免连续3天训练。</div></div>
+<div class="rec-card priority-low"><div class="rec-header"><span class="rec-priority">低优先级</span><span class="rec-title">力量训练后加拉伸</span></div><div class="rec-desc">每次力量训练 53-66min，建议训练后增加 10min 静态拉伸。</div></div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-header"><h2>🍚 趣味数据</h2><div class="section-line"></div></div>
+<div class="fun-facts"><div class="fun-facts-content"><h3>本周你消耗了</h3><div class="big-number">3,648</div><div class="big-label">kcal ≈ 21 碗米饭 🍚</div><div class="fun-items"><div class="fun-item"><span class="emoji">🍔</span> 汉堡 × 6.1 个</div><div class="fun-item"><span class="emoji">🍕</span> 披萨 × 4.4 片</div><div class="fun-item"><span class="emoji">🍦</span> 冰淇淋 × 12.1 杯</div></div></div></div>
+</section>
+
+<footer class="footer"><div>报告生成时间：2026-07-07 | 数据来源：Coros Training Hub</div><div style="margin-top:8px">Powered by OpenClaw × Coros MCP × ApexCharts</div></footer>
+
+</div>
+
+<script>
+Apex.chart={fontFamily:"'Noto Sans SC',sans-serif",foreColor:'#8a8a9a',background:'transparent',toolbar:{show:false},animations:{enabled:true,speed:800,dynamicAnimation:{enabled:true,speed:400}}};
+var C={cyan:'#00e5ff',blue:'#2979ff',orange:'#ff6d00',red:'#ff1744',green:'#00e676',yellow:'#ffd600',purple:'#b388ff',muted:'#5a5a6a'};
+var D=['6/29\n周一','6/30\n周二','7/01\n周三','7/02\n周四','7/03\n周五','7/04\n周六','7/05\n周日'];
+
+new ApexCharts(document.querySelector('#chart-hrv'),{series:[{name:'HRV',data:[63,55,73,68,79,81,59]}],chart:{type:'line',height:260},colors:[C.cyan],stroke:{curve:'smooth',width:3},fill:{type:'gradient',gradient:{shadeIntensity:1,opacityFrom:.4,opacityTo:.05,stops:[0,90,100]}},markers:{size:5,colors:['#0c0c12'],strokeColors:C.cyan,strokeWidth:2,hover:{size:7}},xaxis:{categories:D,labels:{style:{fontSize:'10px'}}},yaxis:{min:40,max:90,labels:{formatter:function(v){return v.toFixed(0)}}},annotations:{yaxis:[{y:65,borderColor:C.green,strokeDashArray:4,label:{text:'基线 65',style:{color:'#0c0c12',background:C.green,fontSize:'10px'}}},{y:60,borderColor:C.orange,strokeDashArray:4,label:{text:'预警 60',style:{color:'#0c0c12',background:C.orange,fontSize:'10px'}}}]},tooltip:{y:{formatter:function(v){return v+' ms'}}},grid:{borderColor:'rgba(255,255,255,0.04)',strokeDashArray:3}}).render();
+
+new ApexCharts(document.querySelector('#chart-rhr'),{series:[{name:'RHR',data:[47,48,47,49,49,47,51]}],chart:{type:'line',height:260},colors:[C.orange],stroke:{curve:'smooth',width:3},fill:{type:'gradient',gradient:{shadeIntensity:1,opacityFrom:.3,opacityTo:.05,stops:[0,90,100]}},markers:{size:5,colors:['#0c0c12'],strokeColors:C.orange,strokeWidth:2,hover:{size:7}},xaxis:{categories:D,labels:{style:{fontSize:'10px'}}},yaxis:{min:44,max:55,labels:{formatter:function(v){return v.toFixed(0)+' bpm'}}},annotations:{yaxis:[{y:48,borderColor:C.green,strokeDashArray:4,label:{text:'良好 48',style:{color:'#0c0c12',background:C.green,fontSize:'10px'}}},{y:50,borderColor:C.yellow,strokeDashArray:4,label:{text:'注意 50',style:{color:'#0c0c12',background:C.yellow,fontSize:'10px'}}}]},tooltip:{y:{formatter:function(v){return v+' bpm'}}},grid:{borderColor:'rgba(255,255,255,0.04)',strokeDashArray:3}}).render();
+
+new ApexCharts(document.querySelector('#chart-load'),{series:[{name:'训练负荷(TSS)',type:'column',data:[78,0,107,75,0,78,0]},{name:'负荷比',type:'line',data:[1.00,0.89,1.01,1.05,0.91,0.98,0.85]}],chart:{type:'line',height:300},colors:[C.blue,C.cyan],plotOptions:{bar:{columnWidth:'50%',borderRadius:6}},stroke:{curve:'smooth',width:[0,3]},fill:{opacity:[1,1],type:['solid','gradient'],gradient:{shadeIntensity:1,opacityFrom:.3,opacityTo:.05,stops:[0,90,100]}},markers:{size:[0,5],colors:['#0c0c12'],strokeColors:C.cyan,strokeWidth:2},xaxis:{categories:D,labels:{style:{fontSize:'10px'}}},yaxis:[{title:{text:'TSS',style:{color:C.blue,fontSize:'12px'}},labels:{style:{colors:C.blue}}},{opposite:true,title:{text:'负荷比',style:{color:C.cyan,fontSize:'12px'}},labels:{style:{colors:C.cyan},formatter:function(v){return v.toFixed(2)}},min:0.7,max:1.2}],annotations:{yaxis:[{y:1.15,borderColor:C.red,strokeDashArray:4,label:{text:'超负荷线 1.15',style:{color:'#0c0c12',background:C.red,fontSize:'10px'}}}]},tooltip:{shared:true,intersect:false},legend:{position:'top',horizontalAlign:'right'},grid:{borderColor:'rgba(255,255,255,0.04)',strokeDashArray:3}}).render();
+
+new ApexCharts(document.querySelector('#chart-fatigue'),{series:[{name:'疲劳指数',data:[0,-6,1,3,-5,-1,-8]}],chart:{type:'bar',height:260},colors:[C.red],plotOptions:{bar:{columnWidth:'60%',borderRadius:6,colors:{ranges:[{from:-20,to:-1,color:C.green},{from:0,to:0,color:C.muted},{from:1,to:20,color:C.red}]}}},xaxis:{categories:D,labels:{style:{fontSize:'10px'}}},yaxis:{labels:{formatter:function(v){return(v>0?'+':'')+v.toFixed(0)}}},annotations:{yaxis:[{y:0,borderColor:C.muted,strokeWidth:1}]},tooltip:{y:{formatter:function(v){return(v>0?'+':'')+v+(v<0?' (恢复)':' (疲劳)')}}},grid:{borderColor:'rgba(255,255,255,0.04)',strokeDashArray:3}}).render();
+
+new ApexCharts(document.querySelector('#chart-ati-cti'),{series:[{name:'ATI(急性)',data:[57,49,57,60,51,55,47]},{name:'CTI(慢性)',data:[57,55,56,57,56,56,55]}],chart:{type:'line',height:260},colors:[C.orange,C.green],stroke:{curve:'smooth',width:3},fill:{type:'gradient',gradient:{shadeIntensity:1,opacityFrom:.2,opacityTo:.05,stops:[0,90,100]}},markers:{size:4,colors:['#0c0c12'],strokeWidth:2},xaxis:{categories:D,labels:{style:{fontSize:'10px'}}},yaxis:{min:40,max:70,labels:{formatter:function(v){return v.toFixed(0)}}},tooltip:{shared:true,intersect:false},legend:{position:'top',horizontalAlign:'right'},grid:{borderColor:'rgba(255,255,255,0.04)',strokeDashArray:3}}).render();
+
+new ApexCharts(document.querySelector('#chart-radar'),{series:[{name:'本周训练',data:[120,117,124,133,116,109]}],chart:{type:'radar',height:300},colors:[C.purple],xaxis:{categories:['体能#1','体能#2','力量#1','体能#3','体能#4','力量#2'],labels:{style:{fontSize:'10px',colors:['#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a']}}},yaxis:{min:100,max:140,tickAmount:4,labels:{style:{colors:['#5a5a6a']},formatter:function(v){return v.toFixed(0)+' bpm'}}},fill:{opacity:0.3},stroke:{width:2},markers:{size:4,colors:['#0c0c12'],strokeColors:C.purple,strokeWidth:2},tooltip:{y:{formatter:function(v){return v+' bpm'}}},plotOptions:{radar:{polygons:{strokeColors:'rgba(255,255,255,0.06)',connectorColors:'rgba(255,255,255,0.04)'}}}}).render();
+
+new ApexCharts(document.querySelector('#chart-radial'),{series:[91.2],chart:{type:'radialBar',height:300},colors:[C.cyan],plotOptions:{radialBar:{hollow:{size:'62%'},track:{background:'rgba(255,255,255,0.05)',strokeWidth:'100%',margin:5},dataLabels:{name:{offsetY:-10,fontSize:'13px',color:var(--text-secondary),fontFamily:"'Noto Sans SC',sans-serif"},value:{offsetY:5,fontSize:'32px',fontWeight:700,color:var(--text-primary),fontFamily:"'JetBrains Mono',monospace",formatter:function(v){return v+'%'}}}}},stroke:{lineCap:'round'},labels:['周目标完成度']}}).render();
+</script>
+</body>
+</html>
