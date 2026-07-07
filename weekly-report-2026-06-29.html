@@ -9,7 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
 :root{--bg-primary:#0c0c12;--bg-card:rgba(20,20,35,0.7);--bg-card-hover:rgba(25,25,45,0.85);--accent-cyan:#00e5ff;--accent-blue:#2979ff;--accent-orange:#ff6d00;--accent-red:#ff1744;--accent-green:#00e676;--accent-yellow:#ffd600;--accent-purple:#b388ff;--text-primary:#f0f0f5;--text-secondary:#8a8a9a;--text-muted:#5a5a6a;--border-subtle:rgba(255,255,255,0.06);--border-glow:rgba(0,229,255,0.15);--glass-blur:20px}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:'#f0f0f5';min-height:100vh;overflow-x:hidden}
 .bg-grid{position:fixed;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
 .bg-grid::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,rgba(41,121,255,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,229,255,0.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(255,109,0,0.04) 0%,transparent 50%)}
 .container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 24px}
@@ -18,7 +18,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:va
 .header-badge::before{content:'';width:8px;height:8px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 12px var(--accent-cyan);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 .header h1{font-size:42px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff 0%,var(--accent-cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
-.header-date{font-family:'JetBrains Mono',monospace;color:var(--text-secondary);font-size:15px;letter-spacing:1px}
+.header-date{font-family:'JetBrains Mono',monospace;color:'#8a8a9a';font-size:15px;letter-spacing:1px}
 .demo-tag{display:inline-block;margin-top:12px;padding:4px 14px;font-size:12px;background:rgba(255,109,0,0.15);color:var(--accent-orange);border-radius:6px;border:1px solid rgba(255,109,0,0.3);font-family:'JetBrains Mono',monospace}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:40px}
 .stat-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
@@ -28,9 +28,9 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:va
 .stat-card.highlight-green::before{background:linear-gradient(90deg,var(--accent-green),#00bfa5)}
 .stat-card.highlight-purple::before{background:linear-gradient(90deg,var(--accent-purple),var(--accent-blue))}
 .stat-icon{font-size:28px;margin-bottom:12px;display:block}
-.stat-value{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--text-primary);line-height:1.2;margin-bottom:6px}
-.stat-value .unit{font-size:16px;font-weight:400;color:var(--text-secondary);margin-left:4px}
-.stat-label{font-size:14px;color:var(--text-secondary)}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:'#f0f0f5';line-height:1.2;margin-bottom:6px}
+.stat-value .unit{font-size:16px;font-weight:400;color:'#8a8a9a';margin-left:4px}
+.stat-label{font-size:14px;color:'#8a8a9a'}
 .stat-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-family:'JetBrains Mono',monospace}
 .section{margin-bottom:40px}
 .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
@@ -52,19 +52,19 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:va
 .day-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;background:rgba(0,229,255,0.1);color:var(--accent-cyan);border:1px solid rgba(0,229,255,0.2)}
 .day-badge.rest{background:rgba(90,90,106,0.2);color:var(--text-muted);border-color:rgba(90,90,106,0.3)}
 .day-name{font-size:16px;font-weight:600}
-.day-total{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-secondary)}
+.day-total{font-family:'JetBrains Mono',monospace;font-size:13px;color:'#8a8a9a'}
 .day-content{padding:16px 24px}
 .session-row{display:grid;grid-template-columns:80px 1fr 70px 80px 80px 60px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-subtle);font-size:14px}
 .session-row:last-child{border-bottom:none}
 .session-time{font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:13px}
 .session-name{font-weight:500}
-.session-stat{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--text-secondary);font-size:13px}
+.session-stat{font-family:'JetBrains Mono',monospace;text-align:right;color:'#8a8a9a';font-size:13px}
 .session-stat.highlight{color:var(--accent-cyan);font-weight:600}
 .day-summary{display:flex;gap:24px;padding:16px 24px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border-subtle);font-family:'JetBrains Mono',monospace;font-size:13px}
 .day-summary-item{display:flex;align-items:center;gap:6px}
 .day-summary-item .label{color:var(--text-muted)}
 .day-summary-item .value{color:var(--accent-cyan);font-weight:600}
-.day-note{padding:12px 24px;font-size:13px;color:var(--text-secondary);border-top:1px solid var(--border-subtle);background:rgba(255,109,0,0.03)}
+.day-note{padding:12px 24px;font-size:13px;color:'#8a8a9a';border-top:1px solid var(--border-subtle);background:rgba(255,109,0,0.03)}
 .day-note.alert{background:rgba(255,23,68,0.05);border-left:3px solid var(--accent-red)}
 .rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 .rec-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:16px;padding:24px;position:relative;overflow:hidden}
@@ -78,28 +78,28 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:va
 .priority-medium .rec-priority{background:rgba(255,109,0,0.15);color:var(--accent-orange)}
 .priority-low .rec-priority{background:rgba(0,230,118,0.15);color:var(--accent-green)}
 .rec-title{font-size:15px;font-weight:600}
-.rec-desc{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.rec-desc{font-size:13px;color:'#8a8a9a';line-height:1.7}
 .fun-facts{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(41,121,255,0.05));border:1px solid var(--border-glow);border-radius:20px;padding:32px;text-align:center;position:relative;overflow:hidden}
 .fun-facts::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,229,255,0.08) 0%,transparent 70%);animation:rotate 20s linear infinite}
 @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .fun-facts-content{position:relative;z-index:1}
 .fun-facts h3{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--accent-cyan)}
 .fun-facts .big-number{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
-.fun-facts .big-label{font-size:16px;color:var(--text-secondary);margin-bottom:24px}
+.fun-facts .big-label{font-size:16px;color:'#8a8a9a';margin-bottom:24px}
 .fun-items{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
-.fun-item{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--text-secondary)}
+.fun-item{display:flex;align-items:center;gap:8px;font-size:15px;color:'#8a8a9a'}
 .fun-item .emoji{font-size:24px}
 .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
 @media(max-width:900px){.summary-grid{grid-template-columns:1fr}}
 .summary-card{background:var(--bg-card);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border-subtle);border-radius:20px;padding:28px}
-.summary-card ul{list-style:none;padding:0;color:var(--text-secondary);font-size:14px;line-height:2}
+.summary-card ul{list-style:none;padding:0;color:'#8a8a9a';font-size:14px;line-height:2}
 .footer{text-align:center;padding:40px 0 20px;color:var(--text-muted);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border-subtle);margin-top:20px}
-.insight-box{padding:16px;background:rgba(0,229,255,0.05);border-radius:12px;border-left:3px solid var(--accent-cyan);margin-top:16px;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.insight-box{padding:16px;background:rgba(0,229,255,0.05);border-radius:12px;border-left:3px solid var(--accent-cyan);margin-top:16px;font-size:13px;color:'#8a8a9a';line-height:1.7}
 .apexcharts-tooltip{background:rgba(20,20,35,0.95)!important;border:1px solid rgba(0,229,255,0.2)!important;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,0.5)!important}
-.apexcharts-tooltip-title{background:rgba(0,0,0,0.3)!important;border-bottom:1px solid rgba(255,255,255,0.05)!important;color:var(--text-primary)!important}
-.apexcharts-legend-text{color:var(--text-secondary)!important}
+.apexcharts-tooltip-title{background:rgba(0,0,0,0.3)!important;border-bottom:1px solid rgba(255,255,255,0.05)!important;color:'#f0f0f5'!important}
+.apexcharts-legend-text{color:'#8a8a9a'!important}
 .apexcharts-xaxistooltip{background:rgba(20,20,35,0.95)!important;border-color:rgba(0,229,255,0.2)!important}
-.apexcharts-xaxistooltip-text{color:var(--text-primary)!important}
+.apexcharts-xaxistooltip-text{color:'#f0f0f5'!important}
 .apexcharts-gridline{stroke:rgba(255,255,255,0.04)!important}
 .apexcharts-xaxis-label,.apexcharts-yaxis-label{fill:var(--text-muted)!important;font-family:'JetBrains Mono',monospace!important}
 @media(max-width:768px){.header h1{font-size:28px}.stats-grid{grid-template-columns:repeat(2,1fr)}.session-row{grid-template-columns:1fr;gap:4px}.session-row>*{text-align:left!important}.day-summary{flex-direction:column;gap:8px}.fun-items{flex-direction:column;gap:12px}}
@@ -197,8 +197,8 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-primary);color:va
 <section class="section">
 <div class="section-header"><h2>💡 本周总结 & 下周建议</h2><div class="section-line"></div></div>
 <div class="summary-grid">
-<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span>✅ 做得好的</div><ul><li>🎯 <strong style="color:var(--text-primary)">训练频率稳定</strong>：4 天 10 次，练2休1节奏执行到位</li><li>🫀 <strong style="color:var(--text-primary)">HRV 管理优秀</strong>：均值 68.3 高于基线 64.7</li><li>⚖️ <strong style="color:var(--text-primary)">负荷比控制好</strong>：全周 0.85-1.05，较上周改善明显</li></ul></div>
-<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span>⚠️ 需要注意</div><ul><li>📅 <strong style="color:var(--text-primary)">周三单日负荷偏高</strong>：107 TSS + 三练模式</li><li>📉 <strong style="color:var(--text-primary)">周日 HRV 偏低</strong>：59 低于基线 66</li><li>🔴 <strong style="color:var(--text-primary)">周四连续训练疲劳</strong>：疲劳指数 +3</li></ul></div>
+<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)"></span>✅ 做得好的</div><ul><li>🎯 <strong style="color:'#f0f0f5'">训练频率稳定</strong>：4 天 10 次，练2休1节奏执行到位</li><li>🫀 <strong style="color:'#f0f0f5'">HRV 管理优秀</strong>：均值 68.3 高于基线 64.7</li><li>⚖️ <strong style="color:'#f0f0f5'">负荷比控制好</strong>：全周 0.85-1.05，较上周改善明显</li></ul></div>
+<div class="summary-card"><div class="chart-title"><span class="dot" style="background:var(--accent-red);box-shadow:0 0 10px var(--accent-red)"></span>⚠️ 需要注意</div><ul><li>📅 <strong style="color:'#f0f0f5'">周三单日负荷偏高</strong>：107 TSS + 三练模式</li><li>📉 <strong style="color:'#f0f0f5'">周日 HRV 偏低</strong>：59 低于基线 66</li><li>🔴 <strong style="color:'#f0f0f5'">周四连续训练疲劳</strong>：疲劳指数 +3</li></ul></div>
 </div>
 <div class="rec-grid">
 <div class="rec-card priority-high"><div class="rec-header"><span class="rec-priority">高优先级</span><span class="rec-title">控制单日训练次数</span></div><div class="rec-desc">周三三练（132min/107 TSS）是本周负荷最高的训练日。建议将第三练调整为低强度恢复训练或取消，单日不超过2次正式训练。</div></div>
@@ -234,7 +234,7 @@ new ApexCharts(document.querySelector('#chart-ati-cti'),{series:[{name:'ATI(急�
 
 new ApexCharts(document.querySelector('#chart-radar'),{series:[{name:'本周训练',data:[120,117,124,133,116,109]}],chart:{type:'radar',height:300},colors:[C.purple],xaxis:{categories:['体能#1','体能#2','力量#1','体能#3','体能#4','力量#2'],labels:{style:{fontSize:'10px',colors:['#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a','#8a8a9a']}}},yaxis:{min:100,max:140,tickAmount:4,labels:{style:{colors:['#5a5a6a']},formatter:function(v){return v.toFixed(0)+' bpm'}}},fill:{opacity:0.3},stroke:{width:2},markers:{size:4,colors:['#0c0c12'],strokeColors:C.purple,strokeWidth:2},tooltip:{y:{formatter:function(v){return v+' bpm'}}},plotOptions:{radar:{polygons:{strokeColors:'rgba(255,255,255,0.06)',connectorColors:'rgba(255,255,255,0.04)'}}}}).render();
 
-new ApexCharts(document.querySelector('#chart-radial'),{series:[91.2],chart:{type:'radialBar',height:300},colors:[C.cyan],plotOptions:{radialBar:{hollow:{size:'62%'},track:{background:'rgba(255,255,255,0.05)',strokeWidth:'100%',margin:5},dataLabels:{name:{offsetY:-10,fontSize:'13px',color:var(--text-secondary),fontFamily:"'Noto Sans SC',sans-serif"},value:{offsetY:5,fontSize:'32px',fontWeight:700,color:var(--text-primary),fontFamily:"'JetBrains Mono',monospace",formatter:function(v){return v+'%'}}}}},stroke:{lineCap:'round'},labels:['周目标完成度']}}).render();
+new ApexCharts(document.querySelector('#chart-radial'),{series:[91.2],chart:{type:'radialBar',height:300},colors:[C.cyan],plotOptions:{radialBar:{hollow:{size:'62%'},track:{background:'rgba(255,255,255,0.05)',strokeWidth:'100%',margin:5},dataLabels:{name:{offsetY:-10,fontSize:'13px',color:'#8a8a9a',fontFamily:"'Noto Sans SC',sans-serif"},value:{offsetY:5,fontSize:'32px',fontWeight:700,color:'#f0f0f5',fontFamily:"'JetBrains Mono',monospace",formatter:function(v){return v+'%'}}}}},stroke:{lineCap:'round'},labels:['周目标完成度']}}).render();
 </script>
 </body>
 </html>
